@@ -1,0 +1,114 @@
+!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+<title>Анимация с помощью jQuery</title>
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<link rel="shortcut icon" href="favicon.ico" type="image/icon">
+<link rel="stylesheet" type="text/css" href="style.css"/>
+ 
+ 
+ 
+<script type="text/javascript" src="vertical-sliding-menu-described/js/jquery-latest.js"></script>
+<script type="text/javascript" src="vertical-sliding-menu-described/js/jquery.cookie.js"></script>
+ 
+<script type="text/javascript">
+ $(document).ready(function(){
+ 
+if($.cookie("num_open_ul")) { // если в куках есть число
+ 
+        if($.cookie("num_open_ul")!=0) { // и это число не равно нулю - значит какой-то список открыт
+           var number_eq=$.cookie("num_open_ul")-1; // уменьшаем порядковый номер на 1 так как eq   идёт с нуля
+            $("#accordion ul").eq(number_eq).show(); // открываем соответствующий список
+        }
+        
+       
+    };
+    
+    
+//Определяем по нажатию на какой элемент должны открыватся подменю
+$("#accordion > li > div").click(function(){
+            if(!$(this).next().is(':visible')) { // если кликнутый блок не раскрыт ( не виден список после него )
+                        $('#accordion ul').slideUp(280);// сварачиваем все списки
+                }
+                $(this).next().slideToggle(280); // в любом случае переключаем (если открыт закрываем и наоборот) список после кликнутого блока
+                        setTimeout(fncookie, 400);//задержка записи кук
+ 
+                });
+ 
+ 
+ 
+//запись в куки номера открытого меню 
+function fncookie(){
+var number_open_ul=0; // если ноль - то ни один не открыт
+ 
+var i=0; // переменная- счётчик всех списков ul в меню 
+$("#accordion ul").each(function(){
+    i++;// порядковый номер просматриваемого списка увеличиваем на 1
+    if($(this).is(':visible')){ // если блок виден то его порядковый номер заносим в специальную переменную
+        number_open_ul=i;
+    }
+$.cookie("num_open_ul",number_open_ul);// записываем в куки номер открытого списка
+        
+});
+}// end fncookie
+ 
+ 
+});/*end  ready*/
+</script>
+ 
+ 
+ 
+</head>
+<body>
+ 
+ 
+  
+<div id="menu_pop">
+<ul id="accordion">
+ <li><div>ГАЛЕРЕИ и СЛАЙДЕРЫ<br>
+ <span class="button_podtext">Галереи и Слайдеры картинок с помощью jQuery</span></div>
+ <ul>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ <li><a href="#">Ссылка 3</a></li>
+ <li><a href="#">Ссылка 4</a></li>
+ <li><a href="#">Ссылка 1</a></li>
+ </ul>
+ </li>
+ <li><div>АНИМИРОВАННЫЙ ФОН ДЛЯ САЙТА<br>
+ <span class="button_podtext">Анимированный фон с помощью jQuery</span></div>
+ <ul>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ <li><a href="#">Ссылка 3</a></li>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ <li><a href="#">Ссылка 3</a></li>
+ <li><a href="#">Ссылка 4</a></li>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ </ul>
+ </li>
+ <li><div>РАЗНОЕ<br>
+ <span class="button_podtext">Разные эффекты с помощью jQuery</span></div>
+ <ul>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ <li><a href="#">Ссылка 3</a></li>
+ <li><a href="#">Ссылка 4</a></li>
+ <li><a href="#">Ссылка 1</a></li>
+ <li><a href="#">Ссылка 2</a></li>
+ </ul>
+ </li>
+</ul>
+ </div>
+ 
+</body>
+ 
+</html>
