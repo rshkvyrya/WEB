@@ -1,0 +1,80 @@
+.homemenu{ 
+		display:block; 
+		position: fixed;
+		z-index: 1111111;
+		top: 5px;
+		left: 50%;
+		margin-left: -100px;
+	}
+	.homemenu .trigger{
+		display: block;
+		width: 30px;
+		height: 27px;
+		padding:7px;
+		margin-left: 50px;
+		border: 2px solid #3a9bcd;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+	}
+	.homemenu .trigger:hover,
+	.homemenu .trigger:active,
+	.homemenu .trigger:focus{
+		text-decoration: none;
+	}
+	.homemenu .trigger div{
+		position: relative;
+		top: -30px;
+		right: -50px;	
+		color: #fff;
+		font-size: 140%;
+	}
+	.homemenu .trigger span{
+		display: block; 
+		height: 2px; 
+		background: #3a9bcd; 
+		margin-top: 10px;
+	}
+	.homemenu .trigger span:first-child{
+		margin-top: 0;
+	}
+	.homemenu .trigger:hover{
+		background: #ccc;
+	}
+	.homemenu ul.menu{
+		display: none;
+		margin-top: 0px;
+		padding: 10px 20px;
+		background: #000;
+  		background: rgba(0,0,0,0.8);
+	}
+	.menu > li:hover{
+	    background: inherit;
+	}
+	.menu > li > a{
+		padding: 0;
+		text-align: center;
+		text-transform: none;
+	}
+	.menu > li:hover > a{
+	  	color: #eee;
+	}
+	.menu > li > ul{
+		display: block;
+		position: static;
+		width: auto;
+	}
+	.menu > li > ul > li{
+		background: none;
+	}
+	.menu > li > ul > li > a{
+		text-align: left;
+		color: #eee;
+		padding: 0;
+		text-transform: none;
+	}
+ 
+	.menu > li > ul > li > a:hover{
+		color: #eee;
+		background: inherit;
+	}
