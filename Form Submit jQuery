@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+	<title>Проверка формы перед отправкой</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		form div input {
+			border: 1px solid #38AAE5;
+			outline: 0;
+			text-indent: 10px;
+			border-radius: 3px;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			min-width: 300px;
+  			padding: 12px 8px 12px 16px;
+		}
+		form div input:focus{
+			border: 1px solid #147FB6;
+			outline: 0;
+		}
+		a{background:silver;color:black;border:3px groove silver;text-decoration: none;font-weight:bold}
+		div.button{margin-top:10px}
+		.form-msg{
+			margin-left: 100px;
+		}
+		.form-group{
+			position: relative;
+			margin-bottom: 36px;
+		}
+		.form-group input{
+			position: absolute;
+			left: 100px;
+			text-align: left;
+		}
+	</style>
+	<script type="text/javascript">
+		/*
+			Создайте и опишите функцию checkForm(), которая должна вызываться перед отправкой формы
+			В функции необходимо проверить, все ли поля заполнены
+			Если все поля заполнены, то отправить форму
+			Если хотя бы одно поле не заполнено:
+				- выдать alert() с предупреждением
+				- изменить цвет рамки пустого поля на красный
+				- данные не отправлять!
+		*/
+		function checkForm(){
+			var myForm = document.forms['myForm'];
+			var elem = myForm.elements;
+			var isEmpty = false;
+			for(var i=0; i < elem.length;i++){
+				if(elem[i].type == "text"){
+					if(elem[i].value == ""){
+						elem[i].style.borderColor = "red";
+						document.getElementById('fio-message').innerHTML = "<span style='color:red;'>Введите имя!</span>";
+						isEmpty = true;
+					}else{
+						elem[i].style.borderColor = "";
+					}
+				}
+			}
+			if(isEmpty){
+				alert('Заполните все поля!');
+				return false;
+			}else{
+				myForm.submit();
+				alert('Данные успешно отправлены!');
+			}
+		}
+	</script>	
+</head>
+ 
+<body>
+	<h1>Проверка формы перед отправкой</h1>
+	<form id="myForm" name="myForm" action="">
+		<fieldset>
+			<legend>Форма</legend>
+			<div id="fio-message" class="form-msg"></div>
+			<div class="form-group">
+				<label for="fio">ФИО</label>
+				<input type="text" name="name" id="fio" placeholder="Ваше имя">
+			</div>
+			<div id="phone-message"></div>
+			<div class="form-group">
+				<label for="phone">Телефон</label>
+				<input type="tel" name="phone" id="phone" placeholder="Ваш телефон">
+			</div>
+			<div id="email-message"></div>
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input type="email" name="email" id="email" placeholder="Ваше email">
+			</div>
+			<div id="pass-message"></div>
+			<div class="form-group">
+				<label for="pass">Пароль</label>
+				<input type="password" name="pass" id="pass" placeholder="Ваш пароль">
+			</div>
+			<div id="txt5-message"></div>
+			<div class="form-group">
+				<label for="txt5">Поле 5</label>
+				<input type="text" name="p5" id="txt5" placeholder="Ваше txt5">
+			</div>
+			<div class="button">
+				<a href="javascript:checkForm()">Передать форму</a>
+			</div>
+		</fieldset>
+	</form>
+</body>
+</html>
