@@ -1,0 +1,85 @@
+#overlay {
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    background:black url(loader.gif) no-repeat scroll center center;
+}
+#fancybox {
+    position:fixed;
+    z-index:99999;
+}
+#fancybox img{
+  max-width:1024px;
+  height:auto;
+}
+#close-fancybox{
+  cursor:pointer;
+  display:block;
+  position:absolute;
+  z-index:999999;
+  right:-16px;
+  top:-16px;
+  width:32px;
+  height:32px;
+  background:url(/images/close.png) 0 0 no-repeat;
+}
+ 
+ 
+ 
+<script>
+  jQuery(document).ready(function() {
+ 
+jQuery('a.fancybox').click(function(e) {
+    jQuery('body').css('overflow-y', 'hidden');
+    jQuery('<div id="overlay"></div>')
+        .css('top', jQuery(document).scrollTop())
+        .css('opacity', '0')
+        .animate({'opacity': '0.5'}, 'slow')
+        .appendTo('body');
+ 
+    jQuery('<div id="fancybox"></div>')
+        .hide()
+        .appendTo('body');
+      jQuery('<span id="close-fancybox"></span>')
+        .appendTo('#fancybox');
+    jQuery('<img>')
+        .attr('src', jQuery(this).attr('href'))
+        .load(function() {
+            positionLightboxImage();
+        })
+    .click(function() {
+        removeLightbox();
+    })
+    .appendTo('#fancybox');
+  jQuery('#close-fancybox')
+    .click(function() {
+        removeLightbox();
+    })
+    return false;
+});
+ 
+ 
+function positionLightboxImage() {
+    var top = (jQuery(window).height() - jQuery('#fancybox').height()) / 2;
+    var left = (jQuery(window).width() - jQuery('#fancybox').width()) / 2;
+    jQuery('#fancybox')
+        .css({
+            'top': top + jQuery(document).scrollTop(),
+            'left': left
+    })
+    .fadeIn();
+}
+ 
+ 
+function removeLightbox() {
+    jQuery('#overlay, #fancybox')
+        .fadeOut('slow', function() {
+            jQuery(this).remove();
+            jQuery('body').css('overflow-y', 'auto'); // show scrollbars!
+        });
+   }
+ 
+});
+</script>  
