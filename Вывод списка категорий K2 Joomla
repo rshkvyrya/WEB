@@ -1,0 +1,78 @@
+/*Вывод списка категорий*/
+<?php
+    $categoriesModel = K2Model::getInstance('Categories', 'K2Model');
+    $categories_option[] = JHTML::_('select.option', 0, JText::_('K2_NONE_ONSELECTLISTS'));
+    $categories = $categoriesModel->categoriesTree2(NULL, true, false);
+    $categories_options = @array_merge($categories_option, $categories);
+    $lists['categories'] = JHTML::_('select.genericlist', $categories_options, 'category', 'class="inputbox" size="8"', 'value', 'text');
+    echo $lists['categories'];
+?>
+/*создаем новую ф-ю categoriesTree2 в файле /administrator/components/com_k2/models.categories.php*/
+function categoriesTree2($row = NULL, $hideTrashed = false, $hideUnpublished = true)
+    {
+ 
+        $db = JFactory::getDBO();
+        if (isset($row->id))
+        {
+            $idCheck = ' AND id != '.( int )$row->id;
+        }
+        else
+        {
+            $idCheck = null;
+        }
+        if (!isset($row->parent))
+        {
+            if (is_null($row))
+            {
+                $row = new stdClass;
+            }
+            $row->parent = 0;
+        }
+        $query = "SELECT m.* FROM #__k2_categories m WHERE id > 0 {$idCheck}";
+ 
+        if ($hideUnpublished)
+        {
+            $query .= " AND published=1 ";
+        }
+ 
+        if ($hideTrashed)
+        {
+            $query .= " AND trash=0 ";
+        }
+ 
+        $query .= " ORDER BY parent, ordering";
+        $db->setQuery($query);
+        $mitems = $db->loadObjectList();
+        $children = array();
+        if ($mitems)
+        {
+            foreach ($mitems as $v)
+            {
+                if (K2_JVERSION != '15')
+                {
+                    $v->title = $v->name;
+                    $v->parent_id = $v->parent;
+                }
+                $pt = $v->parent;
+                $list = @$children[$pt] ? $children[$pt] : array();
+                array_push($list, $v);
+                $children[$pt] = $list;
+            }
+        }
+        $list = JHTML::_('menu.treerecurse', 3, '', array(), $children, 9999, 0, 0);
+        $mitems = array();
+        foreach ($list as $item)
+        {
+            $item->treename = JString::str_ireplace('&#160;', '- ', $item->treename);
+ 
+            if ($item->trash)
+                $item->treename .= ' [**'.JText::_('K2_TRASHED_CATEGORY').'**]';
+            if (!$item->published)
+                $item->treename .= ' [**'.JText::_('K2_UNPUBLISHED_CATEGORY').'**]';
+ 
+            $mitems[] = JHTML::_('select.option', $item->id, $item->treename);
+        }
+        return $mitems;
+    }
+    
+    /*в строке  $list = JHTML::_('menu.treerecurse', 3, '', array(), $children, 9999, 0, 0); вместо цифры 3 id категории*/
