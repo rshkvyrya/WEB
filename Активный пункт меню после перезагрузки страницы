@@ -1,0 +1,49 @@
+ jQuery(document).ready(function(){
+ 
+if(jQuery.cookie("num_open_ul")) { // если в куках есть число
+ 
+        if(jQuery.cookie("num_open_ul")!=0) { // и это число не равно нулю - значит какой-то список открыт
+           var number_eq=jQuery.cookie("num_open_ul")-1; // уменьшаем порядковый номер на 1 так как eq   идёт с нуля
+            jQuery("ul.accordion-group ul.hikashop_category_list").eq(number_eq).show(); // открываем соответствующий список
+        }
+    };
+ 
+//Определяем по нажатию на какой элемент должны открыватся подменю
+jQuery("ul.accordion-group > li.accordion-heading > a").click(function(){
+	jQuery(this).addClass('on');
+    if(!jQuery(this).next().is(':visible')) { // если кликнутый блок не раскрыт ( не виден список после него )
+                jQuery('ul.accordion-group ul.hikashop_category_list').slideUp(280);// сварачиваем все списки
+        }
+        jQuery(this).next().slideToggle(280); // в любом случае переключаем (если открыт закрываем и наоборот) список после кликнутого блока
+                setTimeout(fncookie, 400);//задержка записи кук
+ 
+        });
+ 
+//запись в куки номера открытого меню
+function fncookie(){
+	var number_open_ul=0; // если ноль - то ни один не открыт
+ 
+	var i=0; // переменная- счётчик всех списков ul в меню
+	jQuery("ul.accordion-group ul.hikashop_category_list").each(function(){
+	    i++;// порядковый номер просматриваемого списка увеличиваем на 1
+	    if(jQuery(this).is(':visible')){ // если блок виден то его порядковый номер заносим в специальную переменную
+	        number_open_ul=i;
+	    }
+ 
+		jQuery.cookie("num_open_ul",number_open_ul);// записываем в куки номер открытого списка
+ 
+	});
+}// end fncookie
+ 
+ 
+/*activnij punkt menu*/
+var pageHref = window.location.pathname+window.location.search;
+jQuery("ul.accordion-group a").removeClass('on');
+jQuery('ul.accordion-group a').each(function(){
+    var linkHref = jQuery(this).attr('href');
+    if (pageHref == linkHref){
+        jQuery(this).closest('ul.accordion-group a').addClass('on');
+	}
+});
+ 
+});/*end  ready*/
