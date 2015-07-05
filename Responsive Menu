@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Responsive Menu</title>
+	<style>
+		*{-moz-box-sizing: border-box;-webkit-box-sizing: border-box; box-sizing: border-box;}
+		body{background: #FF9900;}
+		.container{	max-width: 1024px; padding: 10px;margin: 0 auto;}
+		h2{text-transform: uppercase;text-align: center;}
+		nav{position: relative;min-width: 300px;background: #fff;}
+		ul{list-style: none;}
+		ul.visible-links{display: inline-table;}
+		ul.visible-links li{display: table-cell;border-left: 1px solid #FFCC99;}
+			ul.visible-links li:first-child{font-weight: bold;}
+				ul.visible-links li:first-child a{color:#FF9900!important;}
+		ul.hidden-links{position: absolute;right: 0;top: 100%;}
+		ul.hidden-links li{display: block;border-top: 1px solid #FFCC66}
+		a{display: block;padding: 20px 30px;background: #fff;font-size: 18px;color: #FF9900;text-decoration: none;}
+			a:hover{color: #FF9900;}
+		.hidden{visibility: hidden;}
+		button{position: absolute;height: 100%;right: 0;padding: 0 15px;border: 0;outline: none;color: #fff;cursor: pointer;background-color: #FF6633;}
+			button:hover{background-color: #FF6600}
+			button:after{content: attr(count);position: absolute;width: 30px;height: 30px;left: -16px;top: 12px;text-align: center;background-color: #FF6600;color: #fff;font-size: 14px;line-height: 28px;-moz-border-radius: 50%;-webkit-border-radius: 50%;border-radius: 50%;border: 3px solid #fff;font-weight: bold;}
+				button:hover:after{transform: scale(1.075);}
+		.hamburger{position: relative;width: 32px;height: 4px;background: #fff;margin: auto}
+			.hamburger:before,.hamburger:after{content: '';position: absolute;left: 0;width: 32px;height: 4px;background: #fff;}
+			.hamburger:before{top: -8px;}
+			.hamburger:after{bottom: -8px;}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<nav>
+				<button><div class="hamburger"></div></button>
+				<ul class='visible-links'>
+					<li>
+						<a href='#'>Home</a>
+					</li>
+					<li>
+						<a href='#'>Item-menu-1</a>
+					</li>
+					<li>
+						<a href='#'>Item-menu-2</a>
+					</li>
+					<li>
+						<a href='#'>Item-menu-3</a>
+					</li>
+					<li>
+						<a href='#'>Item-menu-4</a>
+					</li>
+					<li>
+						<a href='#'>Item-menu-5</a>
+					</li>
+					<li>
+						<a href='#'>Item-menu-6</a>
+					</li>
+					<li>
+						<a href='#'>Item-menu-7</a>
+					</li>
+				</ul>
+				<ul class='hidden-links hidden'></ul>
+			</nav>
+		</div>
+	</header>
+	<section>
+		<div class="container">
+			<h2>Responsive Menu</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores minima accusamus quaerat, est harum. Veritatis debitis cupiditate maiores inventore modi, architecto, et perferendis magni cumque placeat veniam repellendus autem neque?</p>
+		</div>
+	</section>
+ 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			var $nav = $('nav');
+			var $btn = $('nav button');
+			var $vlinks = $('nav .visible-links');
+			var $hlinks = $('nav .hidden-links');
+			var breaks = [];
+
+			/*function hidden menu*/
+			function updateNav(){
+				var availableSpace = $btn.hasClass('hidden') ? $nav.width() : $nav.width()-$btn.width()-30;
+				if($vlinks.width() > availableSpace){
+					breaks.push($vlinks.width());
+					$vlinks.children().last().prependTo($hlinks);
+					if($btn.hasClass('hidden')){
+						$btn.removeClass('hidden');
+					}
+				}else{
+					if(availableSpace > breaks[breaks.length-1]){
+						$hlinks.children().first().appendTo($vlinks);
+						breaks.pop();
+					}
+					if(breaks.length < 1){
+						$btn.addClass('hidden');
+						$hlinks.addClass('hidden');
+					}
+				}
+				$btn.attr("count",breaks.length);
+				if($vlinks.width() > availableSpace){
+					updateNav();
+				}
+			}
+
+			$(window).resize(function() {
+				updateNav();
+			});
+			$btn.on('click',function(){
+				$hlinks.toggleClass('hidden');
+			});
+			updateNav();
+		});
+	</script>
+ 
+</body>
+</html>
