@@ -1,0 +1,17 @@
+			/*Меню для малых экранов*/
+	jQuery('.homemenu .trigger').click(function(){
+			if(jQuery(this).hasClass('active')){
+				jQuery('.homemenu ul.menu').slideUp();
+				jQuery(this).removeClass('active');
+			} else {
+				jQuery('.homemenu ul.menu').slideDown();
+				jQuery(this).addClass('active');
+			}
+		});
+	jQuery(document).scroll(function() {
+		if (jQuery(document).scrollTop() >= 150) {
+			jQuery('.homemenu').hide();
+		}else{
+			jQuery('.homemenu').show();
+		}
+	});
